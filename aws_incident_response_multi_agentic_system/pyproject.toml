@@ -16,6 +16,7 @@ dependencies = [
     "jupyter-client>=8.6.3",
     "tavily-python>=0.5.1",
     "colorama>=0.4.6",
+    "atlassian-python-api>=3.41.21",
 ]
 
 [tool.uv.workspace]
