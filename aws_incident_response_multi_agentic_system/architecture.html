@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AWS Incident Response - Agent Architecture</title>
+    <title>AWS Incident Response - Tool Architecture</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <style>
         body {
@@ -29,112 +29,158 @@
             margin: 20px 0;
             line-height: 1.5;
         }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active {
+            background-color: #FF9900;
+            color: white;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        button {
+            background-color: #232F3E;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #FF9900;
+        }
+        .tool-detail {
+            background-color: #f9f9f9;
+            border-left: 4px solid #FF9900;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .animation-controls {
+            text-align: center;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>AWS Incident Response - Agent Architecture</h1>
+        <h1>AWS Incident Response System - Available Tools</h1>
+        
         <div class="description">
-            This diagram shows the multi-agent system for automating incident response in AWS environments.
-            The system consists of specialized agents orchestrated by a supervisor.
-        </div>
-        <div class="mermaid">
-            flowchart TD
-                A[Human Input] --> S[Supervisor Agent]
-                
-                subgraph "Agent System"
-                    S --> M[Monitoring Agent]
-                    S --> D[Diagnosis Agent]
-                    S --> R[Resolution Agent]
-                    
-                    M --> |Monitoring Complete| S
-                    D --> |Diagnosis Complete| S
-                    R --> |Resolution Complete| S
-                    
-                    S --> |Workflow Complete| E[END]
-                end
-                
-                subgraph "AWS Resources"
-                    CW[CloudWatch]
-                    EC2[EC2 Instances]
-                    CT[CloudTrail]
-                    AS[Auto Scaling]
-                    Health[AWS Health]
-                end
-                
-                M -.-> CW
-                M -.-> EC2
-                D -.-> EC2
-                D -.-> CT
-                D -.-> Health
-                R -.-> JIRA[JIRA Tickets]
-                
-                classDef aws fill:#FF9900,stroke:#232F3E,color:white
-                classDef agent fill:#232F3E,stroke:#FF9900,color:white
-                classDef system fill:#007bff,stroke:#0056b3,color:white
-                
-                class CW,EC2,CT,AS,Health aws
-                class M,D,R,S agent
-                class A,E,JIRA system
+            This interactive visualization demonstrates how the three key tools in our AWS incident response system work together to monitor, diagnose, and resolve issues.
         </div>
         
-        <h2>Agent Flow Details</h2>
-        <div class="mermaid">
-            sequenceDiagram
-                participant User
-                participant Supervisor
-                participant Monitoring
-                participant Diagnosis
-                participant Resolution
-                participant AWS
-                participant JIRA
-                
-                User->>Supervisor: Report incident
-                Supervisor->>Monitoring: Check service status
-                Monitoring->>AWS: Query CloudWatch metrics
-                AWS-->>Monitoring: Return metrics data
-                Monitoring-->>Supervisor: Monitoring complete
-                
-                Supervisor->>Diagnosis: Analyze root cause
-                Diagnosis->>AWS: Query instance details
-                AWS-->>Diagnosis: Return diagnostic data
-                Diagnosis-->>Supervisor: Diagnosis complete
-                
-                Supervisor->>Resolution: Create ticket
-                Resolution->>JIRA: Create issue with details
-                JIRA-->>Resolution: Ticket created
-                Resolution-->>Supervisor: Resolution complete
-                
-                Supervisor-->>User: Incident response completed
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('system-overview')">System Overview</div>
+            <div class="tab" onclick="switchTab('tool-details')">Tool Details</div>
+            <div class="tab" onclick="switchTab('workflow')">Workflow Animation</div>
         </div>
         
-        <h2>State Machine</h2>
-        <div class="mermaid">
-            stateDiagram-v2
-                [*] --> Supervisor
-                Supervisor --> Monitoring: Initial Check
-                Monitoring --> Supervisor: Report Findings
-                Supervisor --> Diagnosis: If issues detected
-                Diagnosis --> Supervisor: Provide diagnosis
-                Supervisor --> Resolution: Create action plan
-                Resolution --> Supervisor: Confirm actions taken
-                Supervisor --> [*]: Process complete
-                
-                state Monitoring {
-                    CheckCloudWatch --> CheckEC2Health
-                    CheckEC2Health --> CollectMetrics
-                    CollectMetrics --> GenerateReport
-                }
-                
-                state Diagnosis {
-                    AnalyzeAlarms --> QueryDetails
-                    QueryDetails --> DetermineRootCause
-                }
-                
-                state Resolution {
-                    CreateTicket --> AssignPriority
-                    AssignPriority --> NotifyTeam
-                }
+        <div id="system-overview" class="tab-content active">
+            <h2>System Architecture</h2>
+            <div class="mermaid">
+                flowchart TD
+                    A[Human Input] --> S[Supervisor Agent]
+                    
+                    subgraph "Tool System"
+                        S --> T1[fetch_ec2_metrics_for_alarm_instances]
+                        S --> T2[diagnose_ec2_and_health]
+                        S --> T3[create_jira_issue]
+                        
+                        T1 --> |Alarm Data| S
+                        T2 --> |Diagnosis Results| S
+                        T3 --> |Ticket Created| S
+                    end
+                    
+                    subgraph "AWS Resources"
+                        CW[CloudWatch]
+                        EC2[EC2 Instances]
+                        Health[AWS Health]
+                    end
+                    
+                    T1 -.-> CW
+                    T1 -.-> EC2
+                    T2 -.-> EC2
+                    T2 -.-> Health
+                    T3 -.-> JIRA[JIRA Tickets]
+                    
+                    classDef aws fill:#FF9900,stroke:#232F3E,color:white
+                    classDef tool fill:#232F3E,stroke:#FF9900,color:white
+                    classDef external fill:#007bff,stroke:#0056b3,color:white
+                    
+                    class CW,EC2,Health aws
+                    class T1,T2,T3 tool
+                    class A,S,JIRA external
+            </div>
+        </div>
+        
+        <div id="tool-details" class="tab-content">
+            <h2>Available Tools</h2>
+            
+            <div class="tool-detail">
+                <h3>1. fetch_ec2_metrics_for_alarm_instances</h3>
+                <p>Monitors EC2 instances by fetching CloudWatch alarm data and relevant metrics.</p>
+                <ul>
+                    <li><strong>Input:</strong> alarm_state (default: "ALARM"), period (default: 300)</li>
+                    <li><strong>Output:</strong> Dictionary mapping instance IDs to metrics</li>
+                    <li><strong>Metrics gathered:</strong> CPUUtilization, NetworkIn, NetworkOut, DiskReadOps, DiskWriteOps, StatusCheckFailed</li>
+                </ul>
+            </div>
+            
+            <div class="tool-detail">
+                <h3>2. diagnose_ec2_and_health</h3>
+                <p>Provides detailed diagnostic information about EC2 instances and AWS Health events.</p>
+                <ul>
+                    <li><strong>Input:</strong> instance_ids (single ID or list), event_status (default: "open")</li>
+                    <li><strong>Output:</strong> Dictionary with instance status details and health events</li>
+                    <li><strong>Checks:</strong> Instance status, system status, instance events</li>
+                </ul>
+            </div>
+            
+            <div class="tool-detail">
+                <h3>3. create_jira_issue</h3>
+                <p>Creates a JIRA ticket with incident details for resolution tracking.</p>
+                <ul>
+                    <li><strong>Input:</strong> summary, description, project_key (default: "AIRT"), issue_type (default: "Task"), assignee (optional)</li>
+                    <li><strong>Output:</strong> JIRA API response with ticket details</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div id="workflow" class="tab-content">
+            <h2>Incident Response Workflow</h2>
+            <div class="animation-controls">
+                <button onclick="updateWorkflowStep(1)">1. Monitor</button>
+                <button onclick="updateWorkflowStep(2)">2. Diagnose</button>
+                <button onclick="updateWorkflowStep(3)">3. Resolve</button>
+                <button onclick="updateWorkflowStep(0)">Reset</button>
+            </div>
+            <div id="workflow-diagram" class="mermaid">
+                sequenceDiagram
+                    participant User
+                    participant Agent
+                    participant AWS
+                    participant JIRA
+                    
+                    User->>Agent: Report possible incident
+                    Note over Agent: Starting monitoring...
+            </div>
         </div>
     </div>
     
@@ -148,6 +194,97 @@
                 htmlLabels: true
             }
         });
+        
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const contents = document.getElementsByClassName('tab-content');
+            for (let content of contents) {
+                content.classList.remove('active');
+            }
+            
+            // Remove active class from all tabs
+            const tabs = document.getElementsByClassName('tab');
+            for (let tab of tabs) {
+                tab.classList.remove('active');
+            }
+            
+            // Show selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Set active class on clicked tab
+            const clickedTab = Array.from(document.getElementsByClassName('tab')).find(
+                tab => tab.getAttribute('onclick').includes(tabId)
+            );
+            if (clickedTab) {
+                clickedTab.classList.add('active');
+            }
+            
+            // Reinitialize mermaid diagrams
+            mermaid.init();
+        }
+        
+        const workflowSteps = [
+            `sequenceDiagram
+                participant User
+                participant Agent
+                participant AWS
+                participant JIRA
+                
+                User->>Agent: Report possible incident
+                Note over Agent: Starting monitoring...`,
+            
+            `sequenceDiagram
+                participant User
+                participant Agent
+                participant AWS
+                participant JIRA
+                
+                User->>Agent: Report possible incident
+                Note over Agent: Starting monitoring...
+                Agent->>AWS: fetch_ec2_metrics_for_alarm_instances()
+                AWS-->>Agent: Return alarm metrics
+                Note over Agent: Found EC2 instance in alarm state`,
+            
+            `sequenceDiagram
+                participant User
+                participant Agent
+                participant AWS
+                participant JIRA
+                
+                User->>Agent: Report possible incident
+                Note over Agent: Starting monitoring...
+                Agent->>AWS: fetch_ec2_metrics_for_alarm_instances()
+                AWS-->>Agent: Return alarm metrics
+                Note over Agent: Found EC2 instance in alarm state
+                Agent->>AWS: diagnose_ec2_and_health(instance_id)
+                AWS-->>Agent: Return diagnostic data
+                Note over Agent: CPU utilization at 95%, potential memory leak`,
+            
+            `sequenceDiagram
+                participant User
+                participant Agent
+                participant AWS
+                participant JIRA
+                
+                User->>Agent: Report possible incident
+                Note over Agent: Starting monitoring...
+                Agent->>AWS: fetch_ec2_metrics_for_alarm_instances()
+                AWS-->>Agent: Return alarm metrics
+                Note over Agent: Found EC2 instance in alarm state
+                Agent->>AWS: diagnose_ec2_and_health(instance_id)
+                AWS-->>Agent: Return diagnostic data
+                Note over Agent: CPU utilization at 95%, potential memory leak
+                Agent->>JIRA: create_jira_issue()
+                JIRA-->>Agent: Ticket created
+                Agent-->>User: Incident resolved: JIRA-1234 created
+                Note over User,JIRA: EC2 high CPU incident reported and tracked`
+        ];
+        
+        function updateWorkflowStep(step) {
+            const diagram = document.getElementById('workflow-diagram');
+            diagram.innerHTML = workflowSteps[step];
+            mermaid.init();
+        }
     </script>
 </body>
 </html>
