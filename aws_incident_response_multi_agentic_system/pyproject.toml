@@ -17,6 +17,8 @@ dependencies = [
     "tavily-python>=0.5.1",
     "colorama>=0.4.6",
     "atlassian-python-api>=3.41.21",
+    "wandb>=0.19.8",
+    "langsmith>=0.2.11",
 ]
 
 [tool.uv.workspace]
