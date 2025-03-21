@@ -1,13 +1,13 @@
 # AWS Incident Response System with LangGraph
-Agents are autonomous systems that intelligently accomplish tasks on your behalf, orchestrate plans and execute those plans by breaking them down into sub steps and simpler tasks. These tasks can range from simple workflows to pursuing more complex tasks. In this blog, we will do a walk through of an example that is built using LangGraph. 
+Agents are autonomous systems that intelligently accomplish tasks on your behalf, orchestrate plans and execute those plans by breaking them down into sub steps and simpler tasks. These tasks can range from simple workflows to pursuing more complex tasks. In this blog, we will do a walk through of an example that is built using `LangGraph`. 
 
-LangGraph, a library within the LangChain ecosystem, is a framework for building and managing complex, stateful, multi-agent LLM applications by modeling workflows as graphs, allowing for more flexible and controllable agent architectures. 
+`LangGraph`, a library within the `LangChain` ecosystem, is a framework for building and managing complex, stateful, multi-agent LLM applications by modeling workflows as graphs, allowing for more flexible and controllable agent architectures. 
 
 ## Technical Walkthrough: Building an Autonomous AWS Incident Response System with LangGraph
 
 This technical walkthrough examines a multi-agent system for autonomous incident response in AWS environments. The system uses LangGraph for orchestration, AWS SDK for service interaction, and LLMs for intelligent decision-making. The solution creates a coordinated workflow of specialized agents that monitor, diagnose, and remediate issues while maintaining communication with stakeholders.
 
-![architecture](aws_incident_response_multi_agentic_system/architecture1.png)
+![architecture](aws_incident_response_multi_agentic_system/arch1.png)
 
 ## Installation Instructions
 Follow these steps to set up and run the AWS incident response system:
@@ -52,8 +52,8 @@ Follow these steps to set up and run the AWS incident response system:
 
 The system consists of four specialized agents working together in a coordinated workflow:
 
-1. **Monitoring Agent**: Checks AWS service status, particularly EC2 instances, by fetching CloudWatch alarms and metrics
-2. **Diagnosis Agent**: Analyzes root causes of identified issues using EC2 status data and AWS Health events
+1. **Monitoring Agent**: Checks AWS service status from cloudwatch logs. The user is able to ask questions about any service. For this example, we created a dummy log group and asked questions to check for synthetically made up security and compliance violations, but this can ideally be for any cloudwatch log group.
+2. **Diagnosis Agent**: Analyzes root causes of identified issues and looks for remediation strategies using the `tavily_search` tool.
 3. **Resolution Agent**: Creates JIRA tickets for remediation based on diagnosis outcomes
 4. **Supervisor Agent**: Orchestrates the workflow between the specialized agents
 
