@@ -19,6 +19,8 @@ dependencies = [
     "atlassian-python-api>=3.41.21",
     "wandb>=0.19.8",
     "langsmith>=0.2.11",
+    "streamlit>=1.43.2",
+    "ipywidgets>=8.1.5",
 ]
 
 [tool.uv.workspace]

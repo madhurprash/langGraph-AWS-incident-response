@@ -1,0 +1,3 @@
+2025-03-20 22:40:51.505537 - node1: {'response': "Hi there! You said: 'Hi!'"}
+2025-03-20 22:40:51.508559 - node2: {'response': 'What else can I help you with?'}
+2025-03-20 22:40:51.510265 - supervisor: {'workflow': {'status': 'completed', 'recursion_limit': 10}}
