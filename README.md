@@ -3,6 +3,8 @@ Agents are autonomous systems that intelligently accomplish tasks on your behalf
 
 `LangGraph`, a library within the `LangChain` ecosystem, is a framework for building and managing complex, stateful, multi-agent LLM applications by modeling workflows as graphs, allowing for more flexible and controllable agent architectures. 
 
+[![Intro](thumbnail.png)](https://www.youtube.com/watch?v=Yb7hDjDKSR4)
+
 ## Technical Walkthrough: Building an Autonomous AWS Incident Response System with LangGraph
 
 This technical walkthrough examines a multi-agent system for autonomous incident response in AWS environments. The system uses LangGraph for orchestration, AWS SDK for service interaction, and LLMs for intelligent decision-making. The solution creates a coordinated workflow of specialized agents that monitor, diagnose, and remediate issues while maintaining communication with stakeholders.
